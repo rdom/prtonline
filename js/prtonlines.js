@@ -149,6 +149,11 @@ $(document).ready(function(){
 	    svg.select("g.x.axis").call(xAxis);
             svg.select("path.line").attr("d", line(adata));
 	});
+
+	if(gOnline==1){
+	    iprt.src = "data/last_digi/?" + escape(new Date());
+	    iprt.onload = function(){ context.drawImage(iprt, 0, 0); }
+	}
     }
     
     function draw() {
