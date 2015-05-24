@@ -1,0 +1,70 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+	<head>
+		<title>Prt Online</title>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+
+
+		<!-- <script src="js/jquery.min.js"></script> -->
+		
+		<script src="js/prtonline.js"></script>
+		<script src="js/d3.v3.min.js"></script>
+	</head>
+	
+	<style type="text/css">
+	
+	#cdist { cursor:crosshair; }
+	.pixel:hover {
+	   fill: orange !important;
+	}
+	.pixel{
+		stroke: "#00000"; 
+		stroke-width: 0.1px;
+	}
+	</style>
+
+	<body style="margin:40px">
+
+		<div class="content" style="width:800px">
+			<svg class="svg" width="800" height="400"> </svg>
+			<canvas id="cfit" width="800" height="500"></canvas>
+		</div>
+
+
+		<script>
+		DrcDigi(3);
+		//readData("data/digi_99.csv");
+
+		
+		function readData(name){
+			d3.csv(name)
+				.row(function(d) { 
+					d3.select("#mcp"+d.m +" #pix" +d.p)
+						.style("fill",  colorz[d.v ]);
+					return { m: +d.m, p: +d.p,v: +d.v}; })
+				.get();
+		}
+
+		function pulse(sname,arg) {
+			if(drc_Block) return;
+			if (arg === undefined || arg != 1) {
+				var rect = d3.select(this);
+				sname = d3.select(this.parentNode).attr("id") + rect.attr("id");
+			}
+		}
+
+		var num = 0;
+		function infloop() {
+			num++;
+			readData("data/digi_"+num.toString()+".csv");	
+			console.log(num.toString());
+		}
+		
+		window.setInterval(infloop, 3000);
+		
+		</script>
+
+	</body>
+</html>
+
