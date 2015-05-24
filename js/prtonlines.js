@@ -1,4 +1,5 @@
 // online dispalay for gsi prototype (png version)
+// contact: r.dzhygadlo at gsi.de
 
 var gOnline = 1;
 
@@ -16,7 +17,7 @@ $(document).ready(function(){
     
 
     var minDate = new Date(2015, 0, 1);
-	maxDate = new Date(2016, 0, 1);
+    maxDate = new Date(2016, 0, 1);
 
     var bisectDate = d3.bisector(function(d) { return d.time; }).left;
     
@@ -46,9 +47,11 @@ $(document).ready(function(){
 
     var zoom = d3.behavior.zoom()
 	.x(x)
-    	.scaleExtent([0.02, 20])
+    	.scaleExtent([0.02, 40])
 	.on("zoom", draw);
 
+    var adata;
+    
     d3.csv("data/timeline.csv", function(error, data) {
 	data.forEach(function(d) {
 	    d.time = new Date(d.time*1000);
@@ -61,7 +64,8 @@ $(document).ready(function(){
 
 	x.domain([data[0].time, data[data.length - 1].time]);
 	y.domain(d3.extent(data, function(d) { return d.total; }));
-
+	zoom.x(x);
+	
 	svg.append("g")
 	    .attr("class", "x axis")
 	    .attr("transform", "translate(0," + height + ")")
@@ -78,9 +82,8 @@ $(document).ready(function(){
 	    .text("x1k");
 
 	svg.append("path")
-	    .datum(data)
 	    .attr("class", "line")
-	    .attr("d", line);
+	;//   .attr("d", line(data));
 
 	var focus = svg.append("g")
 	    .attr("class", "focus")
@@ -103,69 +106,81 @@ $(document).ready(function(){
 	    .call(zoom)
 	    .on("click",function() { gOnline=0; d3.select("#btnOnline").text("Offline"); });
 
-
-	//x.domain([new Date(2015, 0, 1), new Date(2016, 0, 0)]);
-	//x.domain([ d3.min(data, function(d) { return d.time; }), d3.max(data, function(d) { return d.time; })]);
-
-	zoom.x(x);
+	adata = data;
+	svg.select("path.line").data([data]);
+	draw();
 
 	function mousemove() {
-	  var x0 = x.invert(d3.mouse(this)[0]),
-	    i = bisectDate(data, x0, 1),
-	    d0 = data[i - 1],
-	    d1 = data[i],
-	    d = x0 - d0.time > d1.time - x0 ? d1 : d0;
-	focus.attr("transform", "translate(" + x(d.time) + "," + y(d.total) + ")");
-	focus.select("text").text(d.time.getTime()/1000);
-	if(gOnline==0){
-	    iprt.src = "data/pics/digi_"+d.time.getTime()/1000+".png";
-	    iprt.onload = function(){ context.drawImage(iprt, 0, 0); }
+	    var x0 = x.invert(d3.mouse(this)[0]),
+		i = bisectDate(data, x0, 1),
+		d0 = data[i - 1],
+		d1 = data[i],
+		d = x0 - d0.time > d1.time - x0 ? d1 : d0;
+	    focus.attr("transform", "translate(" + x(d.time) + "," + y(d.total) + ")");
+	    focus.select("text").text(d.time.getTime()/1000);
+	    if(gOnline==0){
+		iprt.src = "data/pics/digi_"+d.time.getTime()/1000+".png";
+		iprt.onload = function(){ context.drawImage(iprt, 0, 0); }
+	    }
 	}
-    }
 	
 	
     });
     
-    setTimeout(function(){
-	readData();
-    }, 1000);
+    setInterval(function(){ readData();}, 1000);
+    var ttt =1;
+    function readData(){
+	d3.csv("data/last_timeline", function(newdata) {
+	    newdata.forEach(function(d) {
+		d.time = new Date(d.time*1000);
+		d.total = +d.total/1000;
+	    });
 
+//	    var adata = d3.selectAll(".line").data();
+	    adata.push(newdata[0]);
+	    // adata[adata.length - 1].time-86400000 
 
+	    x.domain([x.domain()[0], adata[adata.length - 1].time]);
+	    y.domain([0, d3.max(adata, function(d) { return d.total; })]);
+	    // x.domain(d3.extent(adata, function(d) { return d.date; }));
+
+	    //zoom.translate([0, 1000]);
+	    
+	    svg.select("g.x.axis").call(xAxis);
+            svg.select("path.line").attr("d", line(adata));
+	});
+    }
+    
     function draw() {
 
-
-	 var e = d3.event,
-              // now, constrain the x and y components of the translation by the
-              // dimensions of the viewport
-             tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale)),
-             ty = e.translate[1];
-	
-          // then, update the zoom behavior's internal translation, so that
-          // it knows how to properly manipulate it on the next movement
-          zoom.translate([tx, ty]);
-
+	if(adata[adata.length - 1].time - x.domain()[0]>3600 ){
+	    
+	x.domain([x.domain()[0],adata[adata.length - 1].time]);
+	    
 	svg.select("g.x.axis").call(xAxis);
 	svg.select("g.y.axis").call(yAxis);
-        svg.select("path.line").attr("d", line);
+	    svg.select("path.line").attr("d", line);
+	}
+   }
+    
+   //  function draw() {
+// 	var e = d3.event,
+//         tx = Math.min(0, Math.max(e.translate[0], width - width * e.scale)),
+//         ty = e.translate[1];
+	
+//         zoom.translate([tx, ty]);
+// //	x.domain([adata[0].time, adata[adata.length - 1].time]);
+	   
+	
+// 	svg.select("g.x.axis").call(xAxis);
+// 	svg.select("g.y.axis").call(yAxis);
+//         svg.select("path.line").attr("d", line(adata));
 
-
-    }
-    	
+//     }
+    
     
 });
 
-function readData(){
-    d3.csv("example.csv", function(d) {
-	return {
-	    year: new Date(+d.Year, 0, 1), // convert "Year" column to Date
-	    make: d.Make,
-	    model: d.Model,
-	    length: +d.Length // convert "Length" column to number
-	};
-    }, function(error, rows) {
-	console.log(rows);
-    });
-}
 
 function prtOnline(){
     if(gOnline == 1){
