@@ -151,7 +151,7 @@ $(document).ready(function(){
 	});
 
 	if(gOnline==1){
-	    iprt.src = "data/last_digi/?" + escape(new Date());
+	    iprt.src = "data/last_digi?" + escape(new Date());
 	    iprt.onload = function(){ context.drawImage(iprt, 0, 0); }
 	}
     }
