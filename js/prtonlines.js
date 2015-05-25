@@ -57,7 +57,7 @@ $(document).ready(function(){
         .attr("height", y(0) - y(1));
 
     var zoom = d3.behavior.zoom()
-        .scaleExtent([0.02, 40])
+        .scaleExtent([0.02, 100])
 	.x(x)
 	.on("zoom", draw);
 
@@ -172,7 +172,7 @@ $(document).ready(function(){
 	var right = x.domain()[1]; //adata[adata.length - 1].time;
 
 	x.domain([left,right]);
-	
+	y.domain([0, d3.max(adata, function(d) { if( left < d.time && d.time < right) return d.total; })]);
 	
 	    svg.select("g.x.axis").call(xAxis);
 	    svg.select("g.y.axis").call(yAxis);
