@@ -30,7 +30,7 @@ $(document).ready(function(){
     var xAxis = d3.axisBottom(x),
 	xAxis2 = d3.axisBottom(x2),
 	yAxis = d3.axisLeft(y);
-
+    
     var brush = d3.brushX()
         .extent([[0, 0], [width, height2]])
         .on("brush end", brushed);
@@ -61,8 +61,7 @@ $(document).ready(function(){
     var context = svg.append("g")
         .attr("class", "context")
         .attr("transform", "translate(" + margin2.left + "," + margin2.top + ")");
-
-    
+        
     var vline = svg.append("g")
         .attr("class", "focus")
         .style("display", "none");
@@ -134,8 +133,16 @@ $(document).ready(function(){
 
 	focus.append("g")
 	    .attr("class", "axis axis--y")
-	    .call(yAxis);
-
+	    .call(yAxis)
+	    .append("text")
+	    .attr("fill", "#000")
+	    .attr("transform", "rotate(-90)")
+	    .attr("y", -50)
+	    .attr("dy", -10)
+	    .attr("text-anchor", "end")
+	    .text("hits [#] x1k");
+	
+	
 	context.append("g")
 	    .attr("class", "axis axis--x")
 	    .attr("transform", "translate(0," + height2 + ")")
