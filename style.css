@@ -1,0 +1,116 @@
+/* body { */
+/*     font: 10px sans-serif; */
+/* } */
+
+
+#pics {
+    width: 900px;
+}
+
+#buttons {
+    margin-top: 30px;
+    width: 100px;
+    float: right;
+}
+
+.area {
+    stroke-width: 1;
+    stroke: steelblue;
+    fill: none;
+    clip-path: url(#clip);
+}
+
+.area2 {
+    stroke-width: 1;
+    stroke: steelblue;
+    fill: none;
+    clip-path: url(#clip);
+}
+
+.zoom {
+    cursor: move;
+    fill: none;
+    pointer-events: all;
+}
+
+
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1px;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+.overlay_good {
+    fill:  #80ffbf;
+    pointer-events: all;
+}
+
+
+.focus circle {
+    fill: none;
+    stroke-width: 1px;
+    stroke:  #990000
+}
+
+.mfocus circle {
+    fill: none;
+    stroke-width: 1px;
+    stroke:  #990000
+}
+
+.dot {
+    fill: #000  !important;
+    stroke-width: 0 !important;
+}
+
+
+.focus line {
+    stroke-width: 1.5px;
+    stroke:  #990000
+}
+
+.focus text {
+    font-size: 16px;
+}
+
+#timeline{
+    font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 1.5px;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+
+rect.overlay {
+    cursor: move;
+    fill: none;
+    pointer-events: all;
+}
