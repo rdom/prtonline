@@ -2,7 +2,7 @@
 // contact: r.dzhygadlo at gsi.de
 
 var gOnline = 1;
-var gpicid="data/last_hhp?";
+var gpicid="hhp";
 
 
 $(document).ready(function(){
@@ -184,7 +184,7 @@ $(document).ready(function(){
 	    vline.attr("transform", "translate(" + (margin.left+ x(d.time)) + "," + margin.top + ")");
 	mfocus.select("text").text(d.time.getTime()/1000);
 	    if(gOnline==0){
-		iprt.src = "data/pics/hhp_"+d.time.getTime()/1000+".png";
+		iprt.src = "data/pics/"+ gpicid +"_"+d.time.getTime()/1000+".png";
 		iprt.onload = function(){ canv.drawImage(iprt, 0, 0); }
 	    }
     }
@@ -276,7 +276,7 @@ $(document).ready(function(){
 		context.select(".brush").call(brush.move, [ adata[adata.length - 100].time, adata[adata.length - 1].time].map(x));
 	    }
 
-	    iprt.src = gpicid + escape(new Date());
+	    iprt.src = "data/last_" + gpicid +"?"+ escape(new Date());
 	    iprt.onload = function(){ canv.drawImage(iprt, 0, 0); }
 	}
     }
@@ -296,5 +296,5 @@ function prtOnline(){
 
 
 function prtPics(picid){
-    gpicid = "data/last_"+picid +"?";
+    gpicid = picid;
 }

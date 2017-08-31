@@ -13,6 +13,13 @@
     float: right;
 }
 
+#btnOnline {
+    margin-top: 30px;
+    width: 100px;
+    float: right;
+}
+
+
 .area {
     stroke-width: 1;
     stroke: steelblue;
