@@ -15,12 +15,21 @@
 	</head>
 	
 	<body style="margin:10px">
-		<button id="btnOnline" onclick="prtOnline()" style="float:right">Online</button>
+	  <button id="btnOnline" onclick="prtOnline()" style="float:right">Online</button>
+	  
 		<div class="content">
 		  <div id="timeline">
 		    <svg width="960" height="400"></svg>
 		  </div>
-                  <canvas id="canv" width="800" height="500"></canvas>
+		  <div id="pics" id="pics">
+                    <canvas id="canv" width="800" height="500"></canvas>
+		    <div id="buttons" id="pics">
+		      <button id="buttons" onclick="prtPics('hhp')" style="float:right">Hit pat </button>
+		      <button id="buttons" onclick="prtPics('hle')" style="float:right">Le time </button>
+		      <button id="buttons" onclick="prtPics('hch')" style="float:right">Channel </button>
+		      <button id="buttons" onclick="prtPics('hrc')" style="float:right">Ref ch  </button>
+		    </div>
+		  </div>
 		</div>	
 		
 	</body>
