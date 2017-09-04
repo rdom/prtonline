@@ -11,7 +11,7 @@ $(document).ready(function(){
     var iprt = new Image();
     
     var svg = d3.select("svg"),
-    margin = {top: 20, right: 20, bottom: 110, left: 80},
+    margin = {top: 40, right: 20, bottom: 110, left: 80},
     margin2 = {top: 330, right: 20, bottom: 30, left: 80},
     width = +svg.attr("width") - margin.left - margin.right,
     height = +svg.attr("height") - margin.top - margin.bottom,
@@ -90,10 +90,26 @@ $(document).ready(function(){
     mfocus.append("circle")
         .attr("r", 4.5);
 
-    mfocus.append("text")
-        .attr("x", 9)
-        .attr("dy", ".35em");
+    // mfocus.append("text")
+    //     .attr("x", 9)
+    //     .attr("dy", ".35em");
 
+    var label = svg.append("g")
+	.attr("class", "label")
+	.style("display", "none");
+
+
+    label.append("text")
+    	.attr("class", "label1")
+	.attr("x", 9)
+	.attr("dy", "0em");
+    
+    label.append("text")
+    	.attr("class", "label2")
+	.attr("x", 9)
+	.attr("dy", "1em");
+
+    
     var adata;
 
     d3.csv("data/timeline.csv", function(error, data0) {
@@ -176,12 +192,12 @@ $(document).ready(function(){
 	    .on("mouseover", function() {
 		mfocus.style("display", null);
 		vline.style("display", null);
-		//		label.style("display", null);
+		label.style("display", null);
 	    })
 	    .on("mouseout", function() {
 		mfocus.style("display", "none");
 		vline.style("display", "none");
-		//		label.style("display", "none");
+		if(gOnline==0) label.style("display", "none");
 	    })	
 	    .on("mousemove", mousemove)
 	    .call(zoom);
@@ -202,7 +218,12 @@ $(document).ready(function(){
 	    d = x0 - d0.time > d1.time - x0 ? d1 : d0;
 	    mfocus.attr("transform", "translate(" + (margin.left +x(d.time)) + "," + (margin.top + y(d.total)) + ")");
 	    vline.attr("transform", "translate(" + (margin.left+ x(d.time)) + "," + margin.top + ")");
-	mfocus.select("text").text(d.time.getTime()/1000);
+	    label.attr("transform", "translate(" + 100 + "," + 20 + ")");
+	    label.selectAll(".label1").text(d.time);
+	    label.selectAll(".label2").text("flipped: "+ (d.flipped/d.total*100).toFixed(2) + "%");
+	    	    
+	    //mfocus.select("text").text(d.time.getTime()/1000);
+	    
 	    if(gOnline==0){
 		iprt.src = "data/pics/"+ gpicid +"_"+d.time.getTime()/1000+".png";
 		iprt.onload = function(){ canv.drawImage(iprt, 0, 0); }
@@ -255,7 +276,6 @@ $(document).ready(function(){
     }
 
     setInterval(function(){ readData();}, 1000);
-    var ttt =1;
     function readData(){
 
 	d3.csv("data/last_timeline", function(newdata) {
@@ -267,7 +287,6 @@ $(document).ready(function(){
     	    });
 
     	    if(adata[adata.length - 1].time != newdata[0].time && adata[adata.length - 1].total != newdata[0].total){
-
     		adata.push(newdata[0]);
 
     		focus.select("path.area").attr("d", area(adata));
@@ -297,6 +316,9 @@ $(document).ready(function(){
 	    x2.domain(x.domain());
 	    y2.domain(y.domain());
 
+	    label.selectAll(".label1").text(adata[adata.length - 1].time);
+	    label.selectAll(".label2").text("flipped: "+ (adata[adata.length - 1].flipped/adata[adata.length - 1].total*100).toFixed(2) + "%");	    
+	    
 	    if(adata.length>100){
 		context.select(".brush").call(brush.move, [ adata[adata.length - 100].time, adata[adata.length - 1].time].map(x));
 	    }
@@ -313,9 +335,11 @@ function prtOnline(){
     if(gOnline == 1){	
 	gOnline = 0;
 	d3.select("#btnOnline").text("Offline");
+	d3.select(".label").style("display", "none");
     }else{
 	gOnline = 1;
 	d3.select("#btnOnline").text("Online");
+	d3.select(".label").style("display", null);
     }
 }
 
