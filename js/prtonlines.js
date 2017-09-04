@@ -96,7 +96,8 @@ $(document).ready(function(){
 
     var label = svg.append("g")
 	.attr("class", "label")
-	.style("display", "none");
+	.attr("transform", "translate(" + 100 + "," + 20 + ")");
+//	.style("display", "none");
 
 
     label.append("text")
@@ -218,7 +219,6 @@ $(document).ready(function(){
 	    d = x0 - d0.time > d1.time - x0 ? d1 : d0;
 	    mfocus.attr("transform", "translate(" + (margin.left +x(d.time)) + "," + (margin.top + y(d.total)) + ")");
 	    vline.attr("transform", "translate(" + (margin.left+ x(d.time)) + "," + margin.top + ")");
-	    label.attr("transform", "translate(" + 100 + "," + 20 + ")");
 	    label.selectAll(".label1").text(d.time);
 	    label.selectAll(".label2").text("flipped: "+ (d.flipped/d.total*100).toFixed(2) + "%");
 	    	    
