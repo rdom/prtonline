@@ -45,6 +45,11 @@ $(document).ready(function(){
         .x(function(d) { return x(d.time); })
         .y(function(d) { return y(d.total);});
     
+    var area3 = d3.line()
+        .x(function(d) { return x(d.time); })
+        .y(function(d) { return y(d.flipped);});
+
+
     var area2 = d3.area()
         .curve(d3.curveMonotoneX)
         .x(function(d) { return x2(d.time); })
@@ -99,6 +104,8 @@ $(document).ready(function(){
 	    if(d.total>100) {
 		d.time = new Date(d.time*1000);
 		d.total = +d.total/1000;
+		d.mcp = +d.mcp/1000;
+		d.flipped = +d.flipped/1000;
 		data.push(d);
 	    }
 	});
@@ -120,6 +127,12 @@ $(document).ready(function(){
 	    .datum(adata)
 	    .attr("class", "area")
 	    .attr("d", area);
+
+	focus.append("path")
+	    .datum(adata)
+	    .attr("class", "area3")
+	    .attr("d", area3);
+
 	
 	context.append("path")
 	    .datum(adata)
@@ -207,6 +220,7 @@ $(document).ready(function(){
 	var s = d3.event.selection || x2.range();
 	x.domain(s.map(x2.invert, x2));
 	focus.select(".area").attr("d", area);
+	focus.select(".area3").attr("d", area3);
 	focus.select(".axis--x").call(xAxis);
 	svg.select(".zoom").call(zoom.transform, d3.zoomIdentity
 				 .scale(width / (s[1] - s[0]))
@@ -223,6 +237,7 @@ $(document).ready(function(){
 	var t = d3.event.transform;
 	x.domain(t.rescaleX(x2).domain());
 	focus.select(".area").attr("d", area);
+	focus.select(".area3").attr("d", area3);
 	focus.select(".axis--x").call(xAxis);
 
 	dots.selectAll(".dott")
@@ -247,6 +262,8 @@ $(document).ready(function(){
     	    newdata.forEach(function(d) {
     		d.time = new Date(d.time*1000);
     		d.total = +d.total/1000;
+		d.mcp = +d.mcp/1000;
+		d.flipped = +d.flipped/1000;
     	    });
 
     	    if(adata[adata.length - 1].time != newdata[0].time && adata[adata.length - 1].total != newdata[0].total){
@@ -254,6 +271,7 @@ $(document).ready(function(){
     		adata.push(newdata[0]);
 
     		focus.select("path.area").attr("d", area(adata));
+		focus.select("path.area3").attr("d", area3(adata));
     		context.select("path.area2").attr("d", area2(adata));
 
     		dots.selectAll("path")

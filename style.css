@@ -34,6 +34,14 @@
     clip-path: url(#clip);
 }
 
+.area3 {
+    stroke-width: 1;
+    stroke: red;
+    fill: none;
+    clip-path: url(#clip);
+}
+
+
 .zoom {
     cursor: move;
     fill: none;
