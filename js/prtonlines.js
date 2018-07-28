@@ -123,6 +123,7 @@ $(document).ready(function(){
 		d.total = +d.total/1000;
 		d.mcp = +d.mcp/1000;
 		d.flipped = +d.flipped/1000;
+		d.type = +d.type;
 		data.push(d);
 	    }
 	});
@@ -284,6 +285,7 @@ $(document).ready(function(){
     		d.total = +d.total/1000;
 		d.mcp = +d.mcp/1000;
 		d.flipped = +d.flipped/1000;
+		d.type = +d.type;
     	    });
 
     	    if(adata[adata.length - 1].time != newdata[0].time && adata[adata.length - 1].total != newdata[0].total){
@@ -297,6 +299,7 @@ $(document).ready(function(){
     		    .data(adata)
     		    .enter().append("path")
     		    .attr('class', 'dott')
+		    .attr('class', 'dot'+d.type)
     		    .attr("transform", function(d) { return "translate(" + x(d.time) + "," + y(d.total) + ")"; })
     		    .attr("d", d3.symbol().size(40));
 		
