@@ -208,7 +208,8 @@ $(document).ready(function(){
 	dots.selectAll("path")
 	    .data(adata)
 	    .enter().append("path")
-	    .attr('class', 'dott')
+	  //.attr('class', 'dott')
+	    .attr('class', function(d) { return "dott dot" + d.type; })
 	    .attr("transform", function(d) { return "translate(" + x(d.time) + "," + y(d.total) + ")"; })
 	    .attr("d", d3.symbol().size(40));	
 
@@ -298,7 +299,7 @@ $(document).ready(function(){
     		dots.selectAll("path")
     		    .data(adata)
     		    .enter().append("path")
-//    		    .attr('class', 'dott')
+		  //.attr('class', 'dott')
 		    .attr('class', function(d) { return "dott dot" + d.type; })
     		    .attr("transform", function(d) { return "translate(" + x(d.time) + "," + y(d.total) + ")"; })
     		    .attr("d", d3.symbol().size(40));
