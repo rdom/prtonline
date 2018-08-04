@@ -122,7 +122,7 @@ $(document).ready(function(){
 		d.time = new Date(d.time*1000);
 		d.total = +d.total/1000;
 		d.mcp = +d.mcp/1000;
-		d.flipped = +d.flipped/1000;
+		d.flipped = +d.flipped/100;
 		d.type = +d.type;
 		data.push(d);
 	    }
@@ -222,7 +222,7 @@ $(document).ready(function(){
 	    mfocus.attr("transform", "translate(" + (margin.left +x(d.time)) + "," + (margin.top + y(d.total)) + ")");
 	    vline.attr("transform", "translate(" + (margin.left+ x(d.time)) + "," + margin.top + ")");
 	    label.selectAll(".label1").text(d.time);
-	    label.selectAll(".label2").text("flipped: "+ (d.flipped/d.total*100).toFixed(2) + "%");
+	    label.selectAll(".label2").text("flipped: "+ (d.flipped/d.total*10).toFixed(2) + "%");
 	    	    
 	    //mfocus.select("text").text(d.time.getTime()/1000);
 	    
@@ -285,7 +285,7 @@ $(document).ready(function(){
     		d.time = new Date(d.time*1000);
     		d.total = +d.total/1000;
 		d.mcp = +d.mcp/1000;
-		d.flipped = +d.flipped/1000;
+		d.flipped = +d.flipped/100;
 		d.type = +d.type;
     	    });
 
@@ -321,7 +321,7 @@ $(document).ready(function(){
 	    y2.domain(y.domain());
 
 	    label.selectAll(".label1").text(adata[adata.length - 1].time);
-	    label.selectAll(".label2").text("flipped: "+ (adata[adata.length - 1].flipped/adata[adata.length - 1].total*100).toFixed(2) + "%");	    
+	    label.selectAll(".label2").text("flipped: "+ (adata[adata.length - 1].flipped/adata[adata.length - 1].total*10).toFixed(2) + "%");	    
 	    
 	    if(adata.length>100){
 		context.select(".brush").call(brush.move, [ adata[adata.length - 100].time, adata[adata.length - 1].time].map(x));
